@@ -1,5 +1,15 @@
-<ion-content [fullscreen]="true">
-  <app-login></app-login>
-  <app-signup></app-signup>
-  <app-reset-password></app-reset-password>
+<ion-content>
+  <div class="container">
+    @switch(content){
+      @case(Content.Login){
+        <app-access-portal-login (forgotPasswordPressed)="content = Content.ForgotPassword" (registerPressed)="content = Content.Register"></app-access-portal-login>
+      }
+      @case(Content.Register){
+        <app-access-portal-register (backPressed)="content = Content.Login"></app-access-portal-register>
+      }
+      @case(Content.ForgotPassword){
+        <app-access-portal-forgot-password (backPressed)="content = Content.Login"></app-access-portal-forgot-password>
+      }
+    }
+  </div>
 </ion-content>

@@ -12,7 +12,7 @@
   <ion-list style="--ion-item-background: #CF9FFF; border-radius: 25px; padding: 10px;" lines="none">
     @for(plan of plans$ | async; track plan){
     @if(canAddToPlan(plan)){
-    <ion-checkbox (ionChange)="handleCheckboxChange(plan, $event.detail.checked)">{{plan.data.name}}</ion-checkbox>
+    <ion-checkbox (ionChange)="handleCheckboxChange(plan, $event.detail.checked)"><h2 style="color:white;">{{plan.data.name}}</h2></ion-checkbox>
     }
     }
   </ion-list>

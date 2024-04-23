@@ -1,28 +1,17 @@
 .container {
   height: 100%;
+  width: 100%;
+  background-color: #79ccb3;
+  overflow: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #79ccb3;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
-app-profile-user-details{
+app-profile-user-details,
+app-profile-user-settings,
+app-profile-user-personal-data {
   width: 80%;
-  max-width: 600px;
-  height: 50%;
-  max-height: 600px;
-}
-
-app-profile-user-settings{
-  width: 80%;
-  max-width: 600px;
-  height: 50%;
-  max-height: 600px;
-}
-
-app-profile-user-personal-data{
-  width: 80%;
-  max-width: 600px;
-  height: 50%;
-  max-height: 600px;
+  margin: auto;
 }

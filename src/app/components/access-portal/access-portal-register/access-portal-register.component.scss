@@ -1,0 +1,44 @@
+.register-list {
+  background-color: #b5179e;
+  border-radius: 25px;
+  padding: 15px;
+}
+
+.header-item{
+  --ion-item-background: transparent;
+  text-align: center;
+}
+
+.header-text{
+  font-size: xxx-large;
+  min-width: max-content;
+}
+
+.register-form{
+  background-color: #560bad;
+  border-radius: 25px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 15px;
+}
+
+.form-item{
+  --ion-item-background: #4895ef;
+  border-radius: 25px;
+  margin-bottom: 10px;
+}
+
+.button-register-item{
+  --ion-item-background: #e26d5c;
+  border-radius: 25px;
+  width: 80%;
+  margin: auto;
+}
+
+.button-register-label{
+  text-align: center;
+}
+
+.button-register-text{
+  min-width: max-content;
+}

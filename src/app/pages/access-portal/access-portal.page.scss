@@ -1,0 +1,17 @@
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #79ccb3;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+app-access-portal-login,
+app-access-portal-register,
+app-access-portal-forgot-password {
+  width: 80%;
+  margin: auto;
+}

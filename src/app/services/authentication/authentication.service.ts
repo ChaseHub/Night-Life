@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, catchError, concat, defer, forkJoin, from, map, of, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, defer, from, map, of, switchMap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,9 @@ export class AuthenticationService {
     this.fireAuth.onAuthStateChanged((user) => {
       if (user) {
         this.currentUser.next(user);
-        console.log('User is logged in');
+        this.router.navigate(['/home/dashboard']);
       } else {
         this.currentUser.next(null);
-        console.log('User is logged out');
         this.router.navigateByUrl('');
       }
     });
@@ -39,21 +38,17 @@ export class AuthenticationService {
   registerUser(email: string, password: string, username: string): Observable<firebase.default.User | null> {
     return defer(() => {
       return from(this.fireAuth.createUserWithEmailAndPassword(email, password)).pipe(
-        switchMap(data => {
-          return concat([
-            this.updateUserProfile({ username }),
-            this.sendEmailVerification()
-          ]).pipe(
-            switchMap(() => {
-              return of(data.user);
-            })
-          )
+        switchMap((data) => {
+          return of(data.user)
         })
       )
     });
   }
 
-  updateUserProfile(data: Profile): Observable<void> {
+  updateUserProfile(data: {
+    displayName?: string | null | undefined;
+    photoURL?: string | null | undefined;
+  }): Observable<void> {
     return defer(() => {
       return this.currentUser.asObservable().pipe(
         switchMap(user => {
@@ -191,9 +186,4 @@ export class AuthenticationService {
       )
     });
   }
-}
-
-export interface Profile {
-  username?: string | null;
-  photoURL?: string | null;
 }

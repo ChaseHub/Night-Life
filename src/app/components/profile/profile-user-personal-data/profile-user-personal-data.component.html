@@ -1,3 +1,65 @@
-<ion-grid style="width: 100%; height: auto;  background-color: purple; border-radius: 25px; padding: 20px;">
-<ion-item>test</ion-item>
-</ion-grid>
+<ion-list class="personal-list">
+  <ion-item class="header-item" lines="none">
+    <ion-icon name="arrow-back" (click)="backPressed.emit()"></ion-icon>
+    <h1>Personal Info</h1>
+  </ion-item>
+  <ion-item class="personal-item" lines="none">
+    @if(!toggleUsernameEdit){
+    <ion-icon name="pencil" slot="end" (click)="toggleUsernameEdit = true;"></ion-icon>
+    <ion-label>
+      <h2>Username</h2>
+      <h4>{{(userData | async)?.username}}</h4>
+    </ion-label>
+    } @else {
+    <ion-icon name="checkmark-circle" style="color: #70e000;" slot="end" (click)="updateUsername();"></ion-icon>
+    <ion-icon name="close-circle" style="color: coral;" slot="end" (click)="toggleUsernameEdit= false; updatedUsername = '';"></ion-icon>
+    <ion-input [label]="(userData | async)?.username" label-placement="floating" placeholder="Enter new username"
+      [(ngModel)]="updatedUsername"></ion-input>
+    }
+  </ion-item>
+  <ion-item class="personal-item" lines="none">
+    @if(!toggleAddressEdit){
+    <ion-icon name="pencil" slot="end" (click)="toggleAddressEdit = true;"></ion-icon>
+    <ion-label>
+      <h2>Address</h2>
+      @if((userData | async)?.data?.home?.formattedAddress){
+      <h4>{{(userData | async)?.data?.home?.formattedAddress}}</h4>
+      }@else {
+      <h4>No Saved Address</h4>
+      }
+    </ion-label>
+    } @else {
+    <ion-icon name="checkmark-circle" style="color: #70e000;" slot="end" (click)="updateAddress();"></ion-icon>
+    <ion-icon name="close-circle" style="color: coral;" slot="end" (click)="toggleAddressEdit= false; updatedAddress = '';"></ion-icon>
+    <ion-input [label]="(userData | async)?.data?.home?.formattedAddress" label-placement="floating"
+      placeholder="Enter new address" [(ngModel)]="updatedAddress"></ion-input>
+    }
+  </ion-item>
+  <ion-item class="personal-item" lines="none">
+
+    @if(!toggleEmailEdit){
+      <ion-icon name="pencil" slot="end" (click)="toggleEmailEdit = true;"></ion-icon>
+      <ion-label>
+        <h2>Email</h2>
+        <h4>{{email}}</h4>
+      </ion-label>
+      } @else {
+      <ion-icon name="checkmark-circle" style="color: #70e000;" slot="end" (click)="updateEmail();"></ion-icon>
+      <ion-icon name="close-circle" style="color: coral;" slot="end" (click)="toggleEmailEdit= false; updatedEmail = '';"></ion-icon>
+      <ion-input [label]="email" label-placement="floating"
+        placeholder="Enter new email" [(ngModel)]="updatedEmail"></ion-input>
+      }
+  </ion-item>
+  <ion-item class="personal-item" lines="none">
+    <ion-icon name="mail" slot="end" style="color: white" (click)="sendEmailVerification()" appHideOnClick></ion-icon>
+    <ion-label>
+      <h2>Email Verified?</h2>
+      <h4>{{emailVerified}}</h4>
+    </ion-label>
+  </ion-item>
+  <ion-item class="signout-item" lines="none">
+    <ion-label (click)="signOut()">
+      <h2>Signout</h2>
+    </ion-label>
+  </ion-item>
+</ion-list>

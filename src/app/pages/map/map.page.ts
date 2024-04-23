@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
-import { IonContent, ModalController } from '@ionic/angular/standalone';
+import { IonContent, ModalController, IonIcon } from '@ionic/angular/standalone';
 import { Coords, MapboxMapComponent } from 'src/app/components/mapbox/mapbox-map/mapbox-map.component';
 import { MapboxModalComponent } from 'src/app/components/mapbox/mapbox-modal/mapbox-modal.component';
 @Component({
@@ -7,7 +7,7 @@ import { MapboxModalComponent } from 'src/app/components/mapbox/mapbox-modal/map
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
   standalone: true,
-  imports: [IonContent, MapboxMapComponent],
+  imports: [IonIcon, IonContent, MapboxMapComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MapPage implements OnInit {

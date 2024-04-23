@@ -148,6 +148,24 @@ export class UserService {
     });
   }
 
+  updateUsername(uid: string, newUsername: string): Observable<void> {
+    return defer(() => {
+      return this.userRef.doc(uid).get().pipe(
+        switchMap(snapshot => {
+          if (!snapshot.exists) {
+            throw new Error(`User Data with uid ${uid} does not exist`);
+          }
+          return from(snapshot.ref.update({username: newUsername}));
+        }),
+        catchError(error => {
+          return throwError(() => {
+            'Failed to update personal data: ' + error
+          });
+        })
+      );
+    });
+  }
+
   updateMissingUserData(uid: string): Observable<void> {
     return defer(() => {
       return this.userRef.doc(uid).get().pipe(
@@ -186,8 +204,8 @@ export interface PersonalData {
 
 export interface Home {
   formattedAddress: string,
-  lng: string,
-  lat: string
+  lng: number,
+  lat: number
 }
 
 const defaultUserValues: UserData = {

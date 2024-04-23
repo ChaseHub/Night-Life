@@ -3,14 +3,14 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { PlanData, PlanService } from 'src/app/services/database/plan.service';
-import { IonLabel, IonItem, IonIcon, IonDatetimeButton, IonModal, IonDatetime } from "@ionic/angular/standalone";
+import { IonLabel, IonItem, IonIcon, IonDatetimeButton, IonModal, IonDatetime, IonInput } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-mapbox-create-plan',
   templateUrl: './mapbox-create-plan.component.html',
   styleUrls: ['./mapbox-create-plan.component.scss'],
   standalone: true,
-  imports: [IonModal, IonDatetimeButton, IonIcon, IonItem, IonLabel, IonDatetime, CommonModule, FormsModule]
+  imports: [IonInput, IonModal, IonDatetimeButton, IonIcon, IonItem, IonLabel, IonDatetime, CommonModule, FormsModule]
 })
 export class MapboxCreatePlanComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class MapboxCreatePlanComponent implements OnInit {
     },
   };
 
-  name: string = "";
+  planName: string = "";
   startDate: string = new Date().toISOString().slice(0, 16) + ":00";
   endDate: string = new Date().toISOString().slice(0, 16) + ":00";
 
@@ -41,7 +41,7 @@ export class MapboxCreatePlanComponent implements OnInit {
 
   createPlan() {
     const uid = this.authService.currentUser.value?.uid as string;
-    this.planService.createPlan(uid, this.name, this.startDate, this.endDate).subscribe(
+    this.planService.createPlan(uid, this.planName, this.startDate, this.endDate).subscribe(
       (plan) => {
         this.planCreated.emit(plan);
       }

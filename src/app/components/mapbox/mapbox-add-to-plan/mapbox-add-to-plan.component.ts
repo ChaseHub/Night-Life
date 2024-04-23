@@ -6,14 +6,14 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { CustomLocationData } from 'src/app/services/database/custom-location.service';
 import { Location, LocationType, PlanData, PlanService, Role, rolePrecedence } from 'src/app/services/database/plan.service';
 import { Place } from 'src/app/services/foursquare/foursquare.service';
-import { IonItem, IonCheckbox, IonList, IonLabel, IonIcon } from "@ionic/angular/standalone";
+import { IonItem, IonList, IonLabel, IonIcon, IonCheckbox } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-mapbox-add-to-plan',
   templateUrl: './mapbox-add-to-plan.component.html',
   styleUrls: ['./mapbox-add-to-plan.component.scss'],
   standalone: true,
-  imports: [IonIcon, IonLabel, IonList, IonCheckbox, IonItem, CommonModule, HideOnClickDirective]
+  imports: [IonCheckbox, IonIcon, IonLabel, IonList, IonItem, CommonModule, HideOnClickDirective]
 })
 export class MapboxAddToPlanComponent implements OnInit {
 
