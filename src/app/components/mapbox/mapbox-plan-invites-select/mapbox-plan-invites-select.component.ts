@@ -41,12 +41,20 @@ export class MapboxPlanInvitesSelectComponent implements OnInit {
 
   acceptPlanInvite(planInvite: { id: string, data: PlanData }) {
     const uid = this.authService.currentUser.value?.uid as string;
-    this.planService.acceptPlanInvite(uid, planInvite.id).subscribe();
+    this.planService.acceptPlanInvite(uid, planInvite.id).subscribe(
+      () => {
+        this.planInvites$ = this.planService.getPlanInvites(uid);
+      }
+    );
   }
 
   declinePlanInvite(planInvite: { id: string, data: PlanData }) {
     const uid = this.authService.currentUser.value?.uid as string;
-    this.planService.rejectPlanInvite(uid, planInvite.id).subscribe();
+    this.planService.rejectPlanInvite(uid, planInvite.id).subscribe(
+      () => {
+        this.planInvites$ = this.planService.getPlanInvites(uid);
+      }
+    );
   }
 
 }

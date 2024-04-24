@@ -1,0 +1,32 @@
+<ion-list style="background-color: #9B2335; padding: 10px; border-radius: 25px;">
+  <ion-item style="--ion-item-background: transparent;" lines="none">
+    <ion-icon name="arrow-back" (click)="backPressed.emit()" style="margin-right: 10px;"></ion-icon>
+    <h1>Find Username</h1>
+  </ion-item>
+  <form [formGroup]="friendSearchForm">
+    <ion-item style="--ion-item-background: #C3447A; border-radius: 25px;" lines="none">
+      <ion-input formControlName="search" (ionChange)="submitSearch()">
+        <ion-icon slot="start" name="search"></ion-icon>
+      </ion-input>
+    </ion-item>
+  </form>
+  @if(foundUser){
+    <ion-item style="--ion-item-background: #5B5EA6; border-radius: 25px; margin-top: 15px;">
+      <ion-chip style="background-color: transparent; min-height: 50px;">
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{foundUser.username}}</h2>
+        </ion-label>
+      </ion-chip>
+      @if(!foundUser.alreadyFriend){
+        <ion-icon name="add-circle" style="color: lightgreen;" slot="end" appHideOnClick (click)="sendFriendRequest()"></ion-icon>
+      }
+    </ion-item>
+  } @else {
+    <ion-item style="--ion-item-background: transparent;" lines="none">
+      <h4>Empty Search or No User Found</h4>
+    </ion-item>
+  }
+</ion-list>

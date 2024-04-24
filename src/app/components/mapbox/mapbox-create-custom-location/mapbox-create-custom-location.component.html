@@ -1,24 +1,20 @@
 <div class="container">
   <ion-item style="--ion-item-background:transparent;" lines="none">
-    <ion-label>
-      <ion-item lines="none">
-        <ion-icon name="arrow-back" (click)="backPressed.emit()"></ion-icon>
-        <h1 style="font-size: xx-large;">Create Custom Location</h1>
-      </ion-item>
-    </ion-label>
+    <ion-icon name="arrow-back" (click)="backPressed.emit()"></ion-icon>
+    <h1 style="font-size: xx-large;">Create Custom Location</h1>
   </ion-item>
-  <form class="create-form" (ngSubmit)="createCustomLocation()">
+  <form class="create-form" (ngSubmit)="createCustomLocation()" [formGroup]="locationForm">
     <ion-item class="form-item" lines="none">
-      <ion-input name="name" label="Location Name" labelPlacement="stacked" type="text" [(ngModel)]="locationData.name"
+      <ion-input name="name" label="Location Name" labelPlacement="stacked" type="text" formControlName="name"
         required></ion-input>
     </ion-item>
     <ion-item class="form-item" lines="none">
       <ion-input name="description" label="Description" labelPlacement="stacked" type="text"
-        [(ngModel)]="locationData.description" required></ion-input>
+        formControlName="description" required></ion-input>
     </ion-item>
     <ion-item class="form-item" lines="none">
       <ion-input name="formattedAddress" label="Address" labelPlacement="stacked" type="text"
-        [(ngModel)]="locationData.formattedAddress" required></ion-input>
+        formControlName="formattedAddress" required></ion-input>
     </ion-item>
     <ion-item class="form-item" lines="none">
       <ion-label>
@@ -26,8 +22,7 @@
         <ion-datetime-button datetime="locationDate"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="locationDate" presentation="date"
-              [(ngModel)]="locationData.date" [ngModelOptions]="{standalone: true}">
+            <ion-datetime id="locationDate" presentation="date" formControlName="date">
             </ion-datetime>
           </ng-template>
         </ion-modal>
@@ -39,8 +34,7 @@
         <ion-datetime-button datetime="locationStartTime"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="locationStartTime" presentation="time"
-              [(ngModel)]="locationData.hours.start" [ngModelOptions]="{standalone: true}">
+            <ion-datetime id="locationStartTime" presentation="time" formControlName="startHours">
             </ion-datetime>
           </ng-template>
         </ion-modal>
@@ -52,8 +46,7 @@
         <ion-datetime-button datetime="locationEndTime"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="locationEndTime" presentation="time"
-              [(ngModel)]="locationData.hours.end" [ngModelOptions]="{standalone: true}">
+            <ion-datetime id="locationEndTime" presentation="time" formControlName="endHours">
             </ion-datetime>
           </ng-template>
         </ion-modal>
@@ -61,8 +54,7 @@
     </ion-item>
     <ion-item class="form-item" lines="none">
       @if(!customPrice){
-      <ion-select aria-label="Prices" interface="popover" placeholder="Select price" [(ngModel)]="locationData.price"
-        [ngModelOptions]="{standalone: true}">
+      <ion-select interface="popover" placeholder="Select price" formControlName="price">
         <ion-select-option [value]="Price.Free">{{Price.Free}}</ion-select-option>
         <ion-select-option [value]="Price.Cheap">{{Price.Cheap}}</ion-select-option>
         <ion-select-option [value]="Price.Affordable">{{Price.Affordable}}</ion-select-option>
@@ -70,13 +62,12 @@
         <ion-select-option [value]="Price.Expensive">{{Price.Expensive}}</ion-select-option>
       </ion-select>
       } @else {
-      <ion-input name="price" label="Price" labelPlacement="stacked" type="text" [(ngModel)]="locationData.price"
-        required>
+      <ion-input name="price" label="Price" labelPlacement="stacked" type="text" formControlName="price" required>
         <ion-icon slot="start" name="pricetag" style="color: lightgreen;"></ion-icon>
       </ion-input>
       }
       <ion-label slot="end">
-        <ion-checkbox [(ngModel)]="customPrice" [ngModelOptions]="{standalone: true}">Custom?</ion-checkbox>
+        <ion-checkbox (ionChange)="customPrice = $event.detail.checked">Custom?</ion-checkbox>
       </ion-label>
     </ion-item>
     <ion-button type="submit" style="--background: lightgreen; border-radius: 25px; width: 100%;">Create

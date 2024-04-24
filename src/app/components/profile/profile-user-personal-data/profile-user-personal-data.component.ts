@@ -21,7 +21,7 @@ export class ProfileUserPersonalDataComponent implements OnInit {
   @Output() backPressed: EventEmitter<void> = new EventEmitter<void>();
 
   uid: string;
-  userData: Observable<UserData>;
+  userData$: Observable<UserData>;
   email: string;
   emailVerified: boolean;
 
@@ -37,7 +37,7 @@ export class ProfileUserPersonalDataComponent implements OnInit {
     this.uid = this.authService.currentUser.value?.uid as string;
     this.email = this.authService.currentUser.value?.email as string;
     this.emailVerified = this.authService.isVerified;
-    this.userData = this.userService.getUserData(this.uid);
+    this.userData$ = this.userService.getUserData(this.uid);
   }
 
   ngOnInit() {
@@ -66,7 +66,7 @@ export class ProfileUserPersonalDataComponent implements OnInit {
           () => {
             this.usernameService.updateUsername(username, this.updatedUsername).subscribe(
               () => {
-                this.userData = this.userService.getUserData(this.uid);
+                this.userData$ = this.userService.getUserData(this.uid);
                 this.toggleUsernameEdit = false;
               }
             );
@@ -82,7 +82,7 @@ export class ProfileUserPersonalDataComponent implements OnInit {
     }
     this.userService.updatePersonalData(this.uid, { home: { formattedAddress: this.updatedAddress, lat: -9999, lng: -9999 } }).subscribe(
       () => {
-        this.userData = this.userService.getUserData(this.uid);
+        this.userData$ = this.userService.getUserData(this.uid);
         this.toggleAddressEdit = false;
       }
     );

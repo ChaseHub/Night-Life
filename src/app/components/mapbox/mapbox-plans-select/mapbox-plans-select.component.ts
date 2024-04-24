@@ -69,4 +69,9 @@ export class MapboxPlansSelectComponent implements OnInit {
     this.plans$ = this.planService.getUserPlans(uid);
   }
 
+  canEdit(planData: PlanData): boolean{
+    const uid = this.authService.currentUser.value?.uid as string;
+    return this.planService.hasPermission(uid, planData.members, Role.Planner);
+  }
+
 }

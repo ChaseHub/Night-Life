@@ -8,12 +8,12 @@
     <ion-icon name="pencil" slot="end" (click)="toggleUsernameEdit = true;"></ion-icon>
     <ion-label>
       <h2>Username</h2>
-      <h4>{{(userData | async)?.username}}</h4>
+      <h4>{{(userData$ | async)?.username}}</h4>
     </ion-label>
     } @else {
     <ion-icon name="checkmark-circle" style="color: #70e000;" slot="end" (click)="updateUsername();"></ion-icon>
     <ion-icon name="close-circle" style="color: coral;" slot="end" (click)="toggleUsernameEdit= false; updatedUsername = '';"></ion-icon>
-    <ion-input [label]="(userData | async)?.username" label-placement="floating" placeholder="Enter new username"
+    <ion-input [label]="(userData$ | async)?.username" label-placement="floating" placeholder="Enter new username"
       [(ngModel)]="updatedUsername"></ion-input>
     }
   </ion-item>
@@ -22,8 +22,8 @@
     <ion-icon name="pencil" slot="end" (click)="toggleAddressEdit = true;"></ion-icon>
     <ion-label>
       <h2>Address</h2>
-      @if((userData | async)?.data?.home?.formattedAddress){
-      <h4>{{(userData | async)?.data?.home?.formattedAddress}}</h4>
+      @if((userData$ | async)?.data?.home?.formattedAddress){
+      <h4>{{(userData$ | async)?.data?.home?.formattedAddress}}</h4>
       }@else {
       <h4>No Saved Address</h4>
       }
@@ -31,7 +31,7 @@
     } @else {
     <ion-icon name="checkmark-circle" style="color: #70e000;" slot="end" (click)="updateAddress();"></ion-icon>
     <ion-icon name="close-circle" style="color: coral;" slot="end" (click)="toggleAddressEdit= false; updatedAddress = '';"></ion-icon>
-    <ion-input [label]="(userData | async)?.data?.home?.formattedAddress" label-placement="floating"
+    <ion-input [label]="(userData$ | async)?.data?.home?.formattedAddress" label-placement="floating"
       placeholder="Enter new address" [(ngModel)]="updatedAddress"></ion-input>
     }
   </ion-item>

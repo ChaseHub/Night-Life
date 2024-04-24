@@ -1,3 +1,21 @@
 <ion-content [fullscreen]="true">
-  <app-friend-card></app-friend-card>
+  <div class="container">
+    @switch (currentContent) {
+    @case (Content.FriendsList) {
+    <app-social-friends-list (invitesPressed)="currentContent = Content.FriendInvites"
+      (searchPressed)="currentContent = Content.FriendSearch"
+      (inviteToPlanPressed)="selectedUser = $event; currentContent = Content.InviteToPlan"></app-social-friends-list>
+    }
+    @case (Content.FriendSearch) {
+    <app-social-friend-search (backPressed)="currentContent = Content.FriendsList"></app-social-friend-search>
+    }
+    @case (Content.FriendInvites) {
+    <app-social-friend-invites (backPressed)="currentContent = Content.FriendsList"></app-social-friend-invites>
+    }
+    @case (Content.InviteToPlan) {
+    <app-social-invite-to-plan [selectedUser]="selectedUser"
+      (backPressed)="currentContent = Content.FriendsList"></app-social-invite-to-plan>
+    }
+    }
+  </div>
 </ion-content>

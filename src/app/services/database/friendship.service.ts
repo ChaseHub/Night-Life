@@ -169,6 +169,23 @@ export class FriendshipService {
     });
   }
 
+  doesFriendshipExist(user1: string, user2: string): Observable<boolean> {
+    return defer(() => {
+      return from(this.friendshipRef.ref
+        .where('user1', 'in', [user1, user2])
+        .where('user2', 'in', [user1, user2])
+        .limit(1)
+        .get()).pipe(
+          map((snapshot) => !snapshot.empty),
+          catchError(error => {
+            return throwError(() => {
+              'Failed to find if friendship exist: ' + error
+            });
+          })
+        );
+    });
+  }
+
   updateMissingFriendshipData(user1: string, user2: string): Observable<void> {
     return defer(() => {
       return from(this.friendshipRef.ref

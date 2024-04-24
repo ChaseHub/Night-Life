@@ -1,0 +1,16 @@
+.friends-list {
+  background-color: teal;
+  border-radius: 25px;
+  padding: 15px;
+}
+
+.header-item{
+  --ion-item-background: transparent;
+}
+
+.friend-item{
+  --ion-item-background: #ff4000;
+  height: 100%;
+  width: 100%;
+  --border-radius: 25px;
+}

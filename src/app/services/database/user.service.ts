@@ -137,7 +137,7 @@ export class UserService {
           }
           const currentPersonalData: PersonalData = snapshot.data()?.data as PersonalData;
           const updatedPersonalData: PersonalData = { ...currentPersonalData, ...newPersonalData };
-          return from(snapshot.ref.update({ settings: updatedPersonalData }));
+          return from(snapshot.ref.update({ data: updatedPersonalData }));
         }),
         catchError(error => {
           return throwError(() => {

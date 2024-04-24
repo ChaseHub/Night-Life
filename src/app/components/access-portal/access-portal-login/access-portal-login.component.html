@@ -4,13 +4,12 @@
       <h1 class="header-text">Login</h1>
     </ion-label>
   </ion-item>
-  <form class="login-form">
+  <form class="login-form" [formGroup]="loginForm">
     <ion-item class="form-item">
-      <ion-input label="Email" type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"></ion-input>
+      <ion-input label="Email" type="email" formControlName="email" required></ion-input>
     </ion-item>
     <ion-item class="form-item">
-      <ion-input label="Password" type="password" [(ngModel)]="password"
-        [ngModelOptions]="{standalone: true}"></ion-input>
+      <ion-input label="Password" type="password" formControlName="password" required></ion-input>
     </ion-item>
   </form>
   <ion-item class="button-login-item" (click)="login()">

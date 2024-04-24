@@ -1,0 +1,18 @@
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #79ccb3;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+app-social-friends-list,
+app-social-friend-search,
+app-social-friend-invites,
+app-social-invite-to-plan {
+  width: 80%;
+  margin: auto;
+}

@@ -1,0 +1,37 @@
+<ion-list class="friends-list" lines="none">
+  <ion-item class="header-item">
+    <ion-label>
+      <h1>Friends List</h1>
+    </ion-label>
+    <ion-icon name="search" style="color:lightblue; margin-right: 10px;" slot="end"
+      (click)="searchPressed.emit()"></ion-icon>
+    <ion-icon name="mail-unread" style="color:white" slot="end" (click)="invitesPressed.emit()"></ion-icon>
+  </ion-item>
+  <ion-list style="max-height: 400px; overflow: scroll; background-color: #70a288; border-radius: 25px; padding: 15px;">
+    @for(friend of (friends$ | async); track friend){
+    <ion-item-sliding style="background-color: #ff4000; border-radius: 25px; margin-bottom: 10px;">
+      <ion-item class="friend-item">
+        <ion-chip style="background-color: transparent; min-height: 50px;">
+          <ion-avatar>
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+          <ion-label>
+            <h2>{{friend | uidToUsername | async}}</h2>
+          </ion-label>
+        </ion-chip>
+        <ion-icon name="chevron-back" style="color:white" slot="end"></ion-icon>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option style="background-color: #bfd7ea;">
+          <ion-icon slot="icon-only" name="close-circle" style="color: coral; margin-right: 10px;"
+            (click)="removeFriend(friend)"></ion-icon>
+        </ion-item-option>
+        <ion-item-option style="background-color: lightgreen;">
+          <ion-icon slot="icon-only" name="mail" style="color: white"
+            (click)="inviteToPlanPressed.emit(friend)"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    }
+  </ion-list>
+</ion-list>

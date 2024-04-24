@@ -1,0 +1,14 @@
+<ion-list style="background-color: #9B2335; padding: 10px; border-radius: 25px;">
+  <ion-item style="--ion-item-background: transparent;" lines="none">
+    <ion-icon name="arrow-back" (click)="backPressed.emit()" style="margin-right: 10px;"></ion-icon>
+    <h1>Invite {{selectedUser | uidToUsername | async}} To</h1>
+  </ion-item>
+  <ion-list style="background-color: #F1EA7F; border-radius: 25px; padding: 10px; max-height: 300px; overflow: scroll;" lines="none">
+    @for(plan of plans$ | async; track plan){
+      <ion-item style="--ion-item-background: #006E6D; border-radius: 25px; margin-bottom: 10px;">
+        <h2>{{plan.data.name}}</h2>
+        <ion-icon name="mail" style="color: white;" slot="end" (click)="inviteToPlan(plan)" appHideOnClick></ion-icon>
+      </ion-item>
+    }
+  </ion-list>
+</ion-list>
