@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { PlanData, PlanService } from 'src/app/services/database/plan.service';
 import { IonLabel, IonItem, IonIcon, IonDatetimeButton, IonModal, IonDatetime, IonInput } from "@ionic/angular/standalone";
+import { ValidationService } from "../../../services/validation/validation.service";
 
 @Component({
   selector: 'app-mapbox-create-plan',
@@ -33,13 +34,19 @@ export class MapboxCreatePlanComponent implements OnInit {
   startDate: string = new Date().toISOString().slice(0, 16) + ":00";
   endDate: string = new Date().toISOString().slice(0, 16) + ":00";
 
-  constructor(private planService: PlanService, private authService: AuthenticationService) { }
+  constructor(private planService: PlanService, private authService: AuthenticationService, private validationService: ValidationService) { }
 
   ngOnInit() {
     let test = 0;
   }
 
   createPlan() {
+    if (!this.validationService.isValidPlanName(this.planName)) {
+      // Display an error message or handle the invalid plan name
+      console.log('Please enter a valid plan name.');
+      return;
+    }
+
     const uid = this.authService.currentUser.value?.uid as string;
     this.planService.createPlan(uid, this.planName, this.startDate, this.endDate).subscribe(
       (plan) => {

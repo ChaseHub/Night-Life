@@ -22,5 +22,16 @@ export class ValidationService {
     return password.length >= minLength && hasUppercase && hasLowercase && hasNumber;
   }
 
+  isValidPlanName(planName: string): boolean {
+    // Check if the plan name is not empty and has a minimum length
+    return planName.trim().length > 0;
+  }
+
   // Add more validation functions as needed such as phone-number
+
+
+
+
+
+
 }

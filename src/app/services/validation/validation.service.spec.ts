@@ -26,4 +26,10 @@ describe('ValidationService', () => {
     expect(service.isValidPassword('NoNumbers')).toBeFalse();
     expect(service.isValidPassword('Sh0rt')).toBeFalse();
   });
+
+  it('should validate plan name correctly', () => {
+    expect(service.isValidPlanName('test')).toBeTrue()
+    expect(service.isValidPlanName('')).toBeFalse()
+    expect(service.isValidPlanName('test-plans')).toBeFalse()
+  })
 });
