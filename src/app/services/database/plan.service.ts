@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { arrayRemove, arrayUnion, Timestamp } from '@angular/fire/firestore';
 import { Observable, catchError, defer, forkJoin, from, map, of, switchMap, throwError } from 'rxjs';
+import { ValidationService } from 'src/app/services/validation/validation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,18 @@ export class PlanService {
 
   private planRef: AngularFirestoreCollection<PlanData>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private validationService: ValidationService) {
     this.planRef = this.db.collection('Plans');
   }
 
   createPlan(uid: string, name: string, startDate: string, endDate: string): Observable<{ id: string, data: PlanData }> {
     return defer(() => {
+      if (!this.validationService.isValidPlanName(name)) {
+        return throwError(() => new Error('Invalid plan name'));
+      }
+      if (!this.validationService.isValidDateRange(startDate, endDate)) {
+        return throwError(() => new Error('Invalid date range'));
+      }
       const planData: PlanData = {
         name,
         dateCreated: Timestamp.fromDate(new Date()).toString(),
@@ -66,6 +73,9 @@ export class PlanService {
 
   updateName(uid: string, planID: string, name: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidPlanName(name)) {
+        return throwError(() => new Error('Invalid plan name'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -74,9 +84,6 @@ export class PlanService {
           const members = snapshot.data()?.members as Member[] || [];
           if (!this.hasPermission(uid, members, Role.CoOwner)) {
             throw new Error('Not enough permissions to update name');
-          }
-          if (!name.trim()) {
-            throw new Error('Name cannot be empty');
           }
           return from(snapshot.ref.update({ name }));
         }),
@@ -91,6 +98,9 @@ export class PlanService {
 
   updateStartDate(uid: string, planID: string, startDate: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidDate(startDate)) {
+        return throwError(() => new Error('Invalid start date'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -113,6 +123,9 @@ export class PlanService {
 
   updateEndDate(uid: string, planID: string, endDate: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidDate(endDate)) {
+        return throwError(() => new Error('Invalid end date'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -135,6 +148,9 @@ export class PlanService {
 
   updateMemberLocation(uid: string, planID: string, lng: number, lat: number): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidUserLocation({ uid, lat, lng })) {
+        return throwError(() => new Error('Invalid user location'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -164,6 +180,9 @@ export class PlanService {
 
   addMember(uid: string, planID: string, newUID: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidMember({ role: Role.Invited, uid: newUID })) {
+        return throwError(() => new Error('Invalid member'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -397,7 +416,6 @@ export class PlanService {
       );
     });
   }
-
   removeLocation(uid: string, planID: string, locationID: string): Observable<void> {
     return defer(() => {
       return this.planRef.doc(planID).get().pipe(
@@ -461,6 +479,9 @@ export class PlanService {
 
   updateLocationStartDate(uid: string, planID: string, locationID: string, newStartDate: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidDate(newStartDate)) {
+        return throwError(() => new Error('Invalid start date'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {
@@ -490,6 +511,9 @@ export class PlanService {
 
   updateLocationEndDate(uid: string, planID: string, locationID: string, newEndDate: string): Observable<void> {
     return defer(() => {
+      if (!this.validationService.isValidDate(newEndDate)) {
+        return throwError(() => new Error('Invalid end date'));
+      }
       return this.planRef.doc(planID).get().pipe(
         switchMap(snapshot => {
           if (!snapshot.exists) {

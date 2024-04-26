@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { LocationType, PlanLocation, Role } from 'src/app/services/database/plan.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +59,60 @@ export class ValidationService {
     const end = new Date(endDate);
     return end >= start;
   }
+
+  isValidLocationOrder(order: number, maxLocations: number): boolean {
+    return Number.isInteger(order) && order >= 0 && order <= maxLocations;
+  }
+
+  isValidRole(role: string): boolean {
+    return Object.values(Role).includes(role as Role);
+  }
+
+  isValidUid(uid: string): boolean {
+    return typeof uid === 'string' && uid.trim().length > 0;
+  }
+
+  isValidMember(member: { role: Role; uid: string }): boolean {
+    return this.isValidRole(member.role) && this.isValidUid(member.uid);
+  }
+
+  /**
+   * @param location
+   * fix errors regarding location object, addLocation in plan.service.ts
+  isValidLocation(location: Location): boolean {
+    return (
+      typeof location.id === 'string' &&
+      location.id.trim().length > 0 &&
+      typeof location.name === 'string' &&
+      location.name.trim().length > 0 &&
+      typeof location.lng === 'number' &&
+      typeof location.lat === 'number' &&
+      Object.values(LocationType).includes(location.type)
+    );
+  }
+
+  isValidPlanLocation(location: PlanLocation): boolean {
+    return (
+      this.isValidLocation(location.location) &&
+      this.isValidUid(location.addedBy) &&
+      this.isValidDate(location.addedDate) &&
+      this.isValidDate(location.startDate) &&
+      this.isValidDate(location.endDate) &&
+      this.isValidLocationOrder(location.orderNum, Number.MAX_SAFE_INTEGER) &&
+      Array.isArray(location.attending) &&
+      location.attending.every(uid => this.isValidUid(uid))
+    );
+  }
+    */
+
+  isValidUserLocation(userLocation: { uid: string; lat: number; lng: number }): boolean {
+    return (
+      this.isValidUid(userLocation.uid) &&
+      typeof userLocation.lat === 'number' &&
+      typeof userLocation.lng === 'number'
+    );
+  }
+
+
 
 }
