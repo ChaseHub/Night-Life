@@ -32,4 +32,23 @@ describe('ValidationService', () => {
     expect(service.isValidPlanName('')).toBeFalse()
     expect(service.isValidPlanName('test-plans')).toBeFalse()
   })
+
+  it('should validate location name correctly', () => {
+    expect(service.isValidLocationName('Central Park')).toBeTrue();
+    expect(service.isValidLocationName('   Empire State Building  ')).toBeTrue();
+    expect(service.isValidLocationName('Food Fair 2024')).toBeTrue();
+    expect(service.isValidLocationName('')).toBeFalse();
+    expect(service.isValidLocationName('  ')).toBeFalse();
+  });
+
+  it('should validate latitude and longitude correctly', () => {
+    expect(service.isValidLatLng(40.7128, -74.0060)).toBeTrue();
+    expect(service.isValidLatLng(0, 0)).toBeTrue();
+    expect(service.isValidLatLng(-90, -180)).toBeTrue();
+    expect(service.isValidLatLng(90, 180)).toBeTrue();
+    expect(service.isValidLatLng(-91, 0)).toBeFalse();
+    expect(service.isValidLatLng(91, 0)).toBeFalse();
+    expect(service.isValidLatLng(0, -181)).toBeFalse();
+    expect(service.isValidLatLng(0, 181)).toBeFalse();
+  });
 });

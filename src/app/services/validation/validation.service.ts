@@ -22,16 +22,25 @@ export class ValidationService {
     return password.length >= minLength && hasUppercase && hasLowercase && hasNumber;
   }
 
+  /**
+   * @param planName
+   * Validates a plan name based on length and character content.
+   */
   isValidPlanName(planName: string): boolean {
-    // Check if the plan name is not empty and has a minimum length
-    return planName.trim().length > 0;
+    // Check if the plan name is not empty, has a maximum length of 32 characters, and contains no special characters
+    const validPattern = /^[a-zA-Z0-9 ]*$/; // Allow only alphanumeric characters and spaces
+    return planName.trim().length > 0 && planName.length <= 32 && validPattern.test(planName.trim());
   }
 
-  // Add more validation functions as needed such as phone-number
+  isValidLocationName(name: string): boolean {
+    // Check if the location name is not empty and has a minimum length
+    return name.trim().length > 0;
+  }
 
-
-
-
+  isValidLatLng(lat: number, lng: number): boolean {
+    // Check if the latitude and longitude are within valid ranges
+    return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+  }
 
 
 }
