@@ -51,4 +51,23 @@ describe('ValidationService', () => {
     expect(service.isValidLatLng(0, -181)).toBeFalse();
     expect(service.isValidLatLng(0, 181)).toBeFalse();
   });
+
+  it('should validate ISO 8601 date format correctly', () => {
+    expect(service.isValidDate('2023-04-15T12:00:00')).toBeTrue();
+    expect(service.isValidDate('2023-04-15T12:00')).toBeFalse();
+    expect(service.isValidDate('2023-04-15')).toBeFalse();
+    expect(service.isValidDate('15-04-2023T12:00:00')).toBeFalse();
+    expect(service.isValidDate('2023-04-15T25:00:00')).toBeFalse(); // Invalid hour
+    expect(service.isValidDate('2023-04-15T12:60:00')).toBeFalse(); // Invalid minute
+    expect(service.isValidDate('2023-04-15T12:00:60')).toBeFalse(); // Invalid second
+  });
+
+  it('should validate date ranges correctly', () => {
+    expect(service.isValidDateRange('2023-04-15T12:00:00', '2023-04-16T12:00:00')).toBeTrue();
+    expect(service.isValidDateRange('2023-04-15T12:00:00', '2023-04-15T12:00:00')).toBeTrue(); // Same start and end
+    expect(service.isValidDateRange('2023-04-15T12:00:00', '2023-04-14T12:00:00')).toBeFalse(); // End before start
+    expect(service.isValidDateRange('2023-04-15T12:00:00', 'invalid-date')).toBeFalse(); // Invalid end date
+    expect(service.isValidDateRange('invalid-date', '2023-04-15T12:00:00')).toBeFalse(); // Invalid start date
+  });
+
 });

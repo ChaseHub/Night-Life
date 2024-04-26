@@ -42,8 +42,12 @@ export class MapboxCreatePlanComponent implements OnInit {
 
   createPlan() {
     if (!this.validationService.isValidPlanName(this.planName)) {
-      // Display an error message or handle the invalid plan name
       console.log('Please enter a valid plan name.');
+      return;
+    }
+
+    if (!this.validationService.isValidDateRange(this.startDate, this.endDate)) {
+      console.log('Please enter a valid date range.');
       return;
     }
 

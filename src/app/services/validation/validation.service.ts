@@ -42,5 +42,20 @@ export class ValidationService {
     return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
   }
 
+  isValidDate(date: string): boolean {
+    // Check if the date is a valid ormat (YYYY-MM-DDTHH:mm:ss)
+    const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+    return isoDateRegex.test(date);
+  }
+
+  isValidDateRange(startDate: string, endDate: string): boolean {
+    if (!this.isValidDate(startDate) || !this.isValidDate(endDate)) {
+      return false;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return end >= start;
+  }
 
 }
