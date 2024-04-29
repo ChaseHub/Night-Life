@@ -25,10 +25,18 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-.testing{
+.map-page-modal{
   pointer-events: none;
   &::part(content) {
     width: 100%;
     height: 50%;
+  }
+}
+
+.browse-page-modal{
+  pointer-events: none;
+  &::part(content) {
+    width: 100%;
+    height: 100%;
   }
 }

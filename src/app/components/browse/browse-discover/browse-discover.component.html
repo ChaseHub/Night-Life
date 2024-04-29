@@ -1,0 +1,22 @@
+<div class="container" style="height: 100%; overflow: scroll;">
+  <div class="browse-swipe-container">
+    <h1>Resturants</h1>
+    <app-browse-swipe [foursquareLocations]="places$ | async" (selectedFoursquareLocation)="selectedFoursquareLocation.emit($event)"></app-browse-swipe>
+  </div>
+  <!-- <div class="browse-swipe-container">
+    <h1>Bars</h1>
+    <app-browse-swipe [foursquareLocations]="places$ | async"></app-browse-swipe>
+  </div>
+  <div class="browse-swipe-container">
+    <h1>Activites</h1>
+    <app-browse-swipe [foursquareLocations]="places$ | async"></app-browse-swipe>
+  </div>
+  <div class="browse-swipe-container">
+    <h1>Other</h1>
+    <app-browse-swipe [foursquareLocations]="places$ | async"></app-browse-swipe>
+  </div>
+  <div class="browse-swipe-container">
+    <h1>Custom Locations</h1>
+    <app-browse-swipe [foursquareLocations]="places$ | async"></app-browse-swipe>
+  </div> -->
+</div>

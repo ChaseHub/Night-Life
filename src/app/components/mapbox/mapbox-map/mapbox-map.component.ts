@@ -1,28 +1,23 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { UserLocationService } from 'src/app/services/location/user-location.service';
 import { MapboxService } from 'src/app/services/mapbox/mapbox.service';
+import { ClickRippleDirective } from 'src/app/directives/click-ripple.directive';
 
 @Component({
   selector: 'app-mapbox-map',
   templateUrl: './mapbox-map.component.html',
   styleUrls: ['./mapbox-map.component.scss'],
   standalone: true,
-  imports: [],
+  imports: [ClickRippleDirective],
 })
-export class MapboxMapComponent  implements OnInit {
+export class MapboxMapComponent implements OnInit {
 
-  @Output() coords: EventEmitter<Coords> = new EventEmitter();
-
-  constructor(private mapbox: MapboxService) {
-
-  }
+  constructor(private mapbox: MapboxService, private userLocationService: UserLocationService) {}
 
   ngOnInit() {
-    console.log("mapbox component created");
-    this.mapbox.initializeMap("map");
-    this.mapbox.map.on("click", async(e) => {
-      this.coords.emit({lat: e.lngLat.lat, lng: e.lngLat.lng});
-    });
-    this.coords.emit({lat: this.mapbox.lat, lng: this.mapbox.lng});
+    let test = 0;
+    const userLocation = this.userLocationService.currentLocation$.getValue();
+    this.mapbox.initializeMap(userLocation.longitude, userLocation.latitude);
   }
 
 }

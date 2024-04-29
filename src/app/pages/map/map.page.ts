@@ -19,7 +19,7 @@ export class MapPage implements OnInit {
   constructor(private modalController: ModalController) { }
 
   async ngOnInit() {
-    console.log("Map Page");
+    let test = 0;
     this.openModal()
   }
 
@@ -32,7 +32,7 @@ export class MapPage implements OnInit {
       component: MapboxModalComponent,
       initialBreakpoint: 1,
       breakpoints: [0, 1],
-      cssClass: 'testing',
+      cssClass: 'map-page-modal',
       mode: 'ios',
       backdropDismiss: false,
       backdropBreakpoint: 1,

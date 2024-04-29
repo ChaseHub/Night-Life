@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
@@ -12,8 +12,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage'
 import { AngularFireModule } from '@angular/fire/compat'
 import { HttpClientModule } from '@angular/common/http';
-import { initialize } from '@ionic/core';
-import { IonicModule } from '@ionic/angular';
 
 if (environment.production) {
   enableProdMode();

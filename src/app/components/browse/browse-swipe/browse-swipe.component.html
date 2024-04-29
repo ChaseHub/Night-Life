@@ -1,0 +1,16 @@
+<div style="height: 100%; width: 100%;">
+  <swiper-container [slidesPerView]="2">
+    @for(location of foursquareLocations; track location){
+    <swiper-slide>
+      <div class="slide-content" (click)="selectedFoursquareLocation.emit(location)">
+        <ion-label style="text-align: center;">
+          <ion-thumbnail class="location-thumbnail">
+            <img [src]="getPlacePhotoSrc(location.photos[0])" />
+          </ion-thumbnail>
+          <h1>{{location.name}}</h1>
+        </ion-label>
+      </div>
+    </swiper-slide>
+    }
+  </swiper-container>
+</div>

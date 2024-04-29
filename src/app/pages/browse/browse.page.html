@@ -1,16 +1,15 @@
-<ion-content [fullscreen]="true">
-  <ion-searchbar [debounce]="1000" (ionInput)="handleInput($event.target.value)"></ion-searchbar>
-  @if(isSearching){
-    <ion-row>
-      @for(searchResult of searchResults; track searchResult) {
-        <ion-col size="5.5">
-          <app-foursquare-card-medium [place]="searchResult" (click)="openModal(searchResult)"></app-foursquare-card-medium>
-        </ion-col>
-      }
-    </ion-row>
-  } @else {
-    @for(places of recommendations; track places){
-      <app-foursquare-swipe [places]="places" (moreDetail)="openModal($event)"></app-foursquare-swipe>
+<ion-header style="background-color: #00c991;">
+  <ion-toolbar style="padding-top: 20px; --background: #8A2BE2; --border-width: 0;">
+    <ion-searchbar [debounce]="1000" (ionInput)="updateIsSearching($event.detail.value)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    @if(isSearching){
+    <app-browse-search [searchQuery]="searchQuery" (selectedFoursquareLocation)="openLocationDetailsModal($event)"></app-browse-search>
     }
-  }
+    @else {
+    <app-browse-discover (selectedFoursquareLocation)="openLocationDetailsModal($event)"></app-browse-discover>
+    }
+  </div>
 </ion-content>
