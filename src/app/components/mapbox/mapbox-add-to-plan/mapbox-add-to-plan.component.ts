@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { CustomLocationData } from 'src/app/services/database/custom-location.service';
 import { Location, LocationType, PlanData, PlanService, Role, rolePrecedence } from 'src/app/services/database/plan.service';
 import { Place } from 'src/app/services/foursquare/foursquare.service';
+import { ValidationService } from "../../../services/validation/validation.service";
 import { IonItem, IonList, IonLabel, IonIcon, IonCheckbox } from "@ionic/angular/standalone";
 
 @Component({
@@ -16,7 +17,6 @@ import { IonItem, IonList, IonLabel, IonIcon, IonCheckbox } from "@ionic/angular
   imports: [IonCheckbox, IonIcon, IonLabel, IonList, IonItem, CommonModule, HideOnClickDirective]
 })
 export class MapboxAddToPlanComponent implements OnInit {
-
   @Input() location!: Place | { id: string, data: CustomLocationData };
 
   @Output() backPressed: EventEmitter<void> = new EventEmitter<void>();
@@ -26,7 +26,11 @@ export class MapboxAddToPlanComponent implements OnInit {
   selectedPlans: { plan: { id: string, data: PlanData }, checked: boolean }[] = [];
   showAddLocation: boolean = false;
 
-  constructor(private authService: AuthenticationService, private planService: PlanService) {
+  constructor(
+    private authService: AuthenticationService,
+    private planService: PlanService,
+    private validationService: ValidationService
+  ) {
     const uid = this.authService.currentUser.value?.uid as string;
     this.plans$ = this.planService.getUserPlans(uid).pipe(
       tap((plans) => {
@@ -57,7 +61,7 @@ export class MapboxAddToPlanComponent implements OnInit {
     if (foundPlanIndex > -1) {
       this.selectedPlans[foundPlanIndex].checked = checked;
     }
-    this.showAddLocation = this.selectedPlans.filter(plan => plan.checked === true).length > 0;
+    this.showAddLocation = this.selectedPlans.filter(plan => plan.checked).length > 0;
   }
 
   isPlace(location: Place | { id: string, data: CustomLocationData }): location is Place {
@@ -70,13 +74,17 @@ export class MapboxAddToPlanComponent implements OnInit {
 
   addLocationToPlans() {
     const uid = this.authService.currentUser.value?.uid as string;
-    const checkedPlans = this.selectedPlans.filter(plan => plan.checked === true);
+    const checkedPlans = this.selectedPlans.filter(plan => plan.checked);
     if (checkedPlans.length < 1) {
       return;
     }
     const addLocationObservables: Observable<void>[] = [];
     checkedPlans.forEach(plan => {
       if (this.isPlace(this.location)) {
+        if (!this.validationService.isValidLocationName(this.location.name)) {
+          console.error('Invalid location name for Foursquare place');
+          return;
+        }
         const locationData: Location = {
           id: this.location.fsq_id,
           type: LocationType.Foursquare,
@@ -86,6 +94,10 @@ export class MapboxAddToPlanComponent implements OnInit {
         }
         addLocationObservables.push(this.planService.addLocation(uid, plan.plan.id, this.planService.getFormattedTimestamp(), this.planService.getFormattedTimestamp(), locationData, -1));
       } else if (this.isCustomLocation(this.location)) {
+        if (!this.validationService.isValidLocationName(this.location.data.location.name)) {
+          console.error('Invalid location name for custom location');
+          return;
+        }
         const locationData: Location = {
           id: this.location.id,
           type: LocationType.Custom,
