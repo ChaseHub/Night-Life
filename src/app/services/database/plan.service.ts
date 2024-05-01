@@ -4,6 +4,7 @@ import { arrayRemove, arrayUnion, Timestamp } from '@angular/fire/firestore';
 import { Observable, catchError, defer, forkJoin, from, map, of, switchMap, throwError } from 'rxjs';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 
+
 @Injectable({
   providedIn: 'root'
 })

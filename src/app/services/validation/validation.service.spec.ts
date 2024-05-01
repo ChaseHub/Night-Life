@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ValidationService } from './validation.service';
+import { Location, LocationType, PlanLocation, Role } from 'src/app/services/database/plan.service';
+
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -69,5 +71,126 @@ describe('ValidationService', () => {
     expect(service.isValidDateRange('2023-04-15T12:00:00', 'invalid-date')).toBeFalse(); // Invalid end date
     expect(service.isValidDateRange('invalid-date', '2023-04-15T12:00:00')).toBeFalse(); // Invalid start date
   });
+
+  it('should validate plan name correctly', () => {
+    expect(service.isValidPlanName('Valid Plan Name')).toBeTrue();
+    expect(service.isValidPlanName('  Short Name  ')).toBeTrue();
+    expect(service.isValidPlanName('')).toBeFalse();
+    expect(service.isValidPlanName('  ')).toBeFalse();
+    expect(service.isValidPlanName('a'.repeat(101))).toBeFalse();
+  });
+
+  it('should validate date correctly', () => {
+    expect(service.isValidDate('2023-06-08T10:30:00')).toBeTrue();
+    expect(service.isValidDate('2023-06-08T10:30:00Z')).toBeFalse();
+    expect(service.isValidDate('2023-06-08 10:30:00')).toBeFalse();
+    expect(service.isValidDate('2023-06-08')).toBeFalse();
+  });
+
+  it('should validate date range correctly', () => {
+    expect(service.isValidDateRange('2023-06-08T10:30:00', '2023-06-08T11:30:00')).toBeTrue();
+    expect(service.isValidDateRange('2023-06-08T10:30:00', '2023-06-08T10:30:00')).toBeTrue();
+    expect(service.isValidDateRange('2023-06-08T11:30:00', '2023-06-08T10:30:00')).toBeFalse();
+    expect(service.isValidDateRange('2023-06-08T10:30:00', 'invalid-date')).toBeFalse();
+    expect(service.isValidDateRange('invalid-date', '2023-06-08T10:30:00')).toBeFalse();
+  });
+
+  it('should validate location order correctly', () => {
+    expect(service.isValidLocationOrder(0, 5)).toBeTrue();
+    expect(service.isValidLocationOrder(3, 5)).toBeTrue();
+    expect(service.isValidLocationOrder(5, 5)).toBeTrue();
+    expect(service.isValidLocationOrder(-1, 5)).toBeFalse();
+    expect(service.isValidLocationOrder(6, 5)).toBeFalse();
+    expect(service.isValidLocationOrder(1.5, 5)).toBeFalse();
+  });
+
+  it('should validate role correctly', () => {
+    expect(service.isValidRole(Role.Owner)).toBeTrue();
+    expect(service.isValidRole(Role.CoOwner)).toBeTrue();
+    expect(service.isValidRole(Role.Planner)).toBeTrue();
+    expect(service.isValidRole(Role.Attendee)).toBeTrue();
+    expect(service.isValidRole(Role.Invited)).toBeTrue();
+    expect(service.isValidRole('invalid-role')).toBeFalse();
+  });
+
+  it('should validate uid correctly', () => {
+    expect(service.isValidUid('valid-uid')).toBeTrue();
+    expect(service.isValidUid('')).toBeFalse();
+    expect(service.isValidUid('  ')).toBeFalse();
+  });
+
+  it('should validate member correctly', () => {
+    expect(service.isValidMember({ role: Role.Owner, uid: 'valid-uid' })).toBeTrue();
+    expect(service.isValidMember({ role: Role.Owner, uid: '' })).toBeFalse();
+  });
+
+  it('should validate plan location correctly', () => {
+    const validLocation: Location = {
+      id: 'valid-id',
+      name: 'Valid Location',
+      lng: 0,
+      lat: 0,
+      type: LocationType.Custom
+    };
+    const validPlanLocation: PlanLocation = {
+      location: validLocation,
+      locationID: 'valid-location-id',
+      addedBy: 'valid-uid',
+      addedDate: '2023-06-08T10:30:00',
+      startDate: '2023-06-08T10:30:00',
+      endDate: '2023-06-08T11:30:00',
+      orderNum: 1,
+      attending: ['valid-uid-1', 'valid-uid-2']
+    };
+    expect(service.isValidPlanLocation(validPlanLocation)).toBeTrue();
+
+    const invalidLocation: Location = {
+      id: '',
+      name: '',
+      lng: 0,
+      lat: 0,
+      type: 'invalid-type' as LocationType
+    };
+    const invalidPlanLocation: PlanLocation = {
+      location: invalidLocation,
+      locationID: '',
+      addedBy: '',
+      addedDate: 'invalid-date',
+      startDate: 'invalid-date',
+      endDate: 'invalid-date',
+      orderNum: -1,
+      attending: ['']
+    };
+    expect(service.isValidPlanLocation(invalidPlanLocation)).toBeFalse();
+  });
+
+  it('should validate user location correctly', () => {
+    expect(service.isValidUserLocation({ uid: 'valid-uid', lat: 0, lng: 0 })).toBeTrue();
+    expect(service.isValidUserLocation({ uid: '', lat: 0, lng: 0 })).toBeFalse();
+    expect(service.isValidUserLocation({ uid: 'valid-uid', lat: '0' as any, lng: 0 })).toBeFalse();
+    expect(service.isValidUserLocation({ uid: 'valid-uid', lat: 0, lng: '0' as any })).toBeFalse();
+  });
+
+  it('should validate location correctly', () => {
+    const validLocation: Location = {
+      id: 'valid-id',
+      name: 'Valid Location',
+      lng: 0,
+      lat: 0,
+      type: LocationType.Custom
+    };
+    expect(service.isValidLocation(validLocation)).toBeTrue();
+
+    const invalidLocation: Location = {
+      id: '',
+      name: '',
+      lng: '0' as any,
+      lat: '0' as any,
+      type: 'invalid-type' as LocationType
+    };
+    expect(service.isValidLocation(invalidLocation)).toBeFalse();
+  });
+
+
 
 });

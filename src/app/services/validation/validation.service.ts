@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { LocationType, PlanLocation, Role } from 'src/app/services/database/plan.service';
+import { Location, LocationType, PlanLocation, Role } from 'src/app/services/database/plan.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
-  constructor() { }
+  constructor() {
+  }
 
   isValidEmail(email: string): boolean {
     // Regex for email validation
@@ -60,7 +61,7 @@ export class ValidationService {
     return end >= start;
   }
 
-  isValidLocationOrder(order: number, maxLocations: number): boolean {
+  hisValidLocationOrder(order: number, maxLocations: number): boolean {
     return Number.isInteger(order) && order >= 0 && order <= maxLocations;
   }
 
@@ -76,9 +77,8 @@ export class ValidationService {
     return this.isValidRole(member.role) && this.isValidUid(member.uid);
   }
 
-  /**
-   * @param location
-   * fix errors regarding location object, addLocation in plan.service.ts
+
+
   isValidLocation(location: Location): boolean {
     return (
       typeof location.id === 'string' &&
@@ -89,6 +89,10 @@ export class ValidationService {
       typeof location.lat === 'number' &&
       Object.values(LocationType).includes(location.type)
     );
+  }
+
+  isValidLocationOrder(order: number, maxLocations: number): boolean {
+    return Number.isInteger(order) && order >= 0 && order <= maxLocations;
   }
 
   isValidPlanLocation(location: PlanLocation): boolean {
@@ -103,7 +107,7 @@ export class ValidationService {
       location.attending.every(uid => this.isValidUid(uid))
     );
   }
-    */
+
 
   isValidUserLocation(userLocation: { uid: string; lat: number; lng: number }): boolean {
     return (
@@ -112,7 +116,7 @@ export class ValidationService {
       typeof userLocation.lng === 'number'
     );
   }
-
-
-
 }
+
+
+
